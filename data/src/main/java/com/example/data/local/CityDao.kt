@@ -10,7 +10,7 @@ import com.example.data.model.CityEntity
 interface CityDao {
 
     @Query("SELECT * FROM CityEntity")
-    fun getAllCities(): List<CityEntity>
+    suspend fun getAllCities(): List<CityEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCity(city: CityEntity)

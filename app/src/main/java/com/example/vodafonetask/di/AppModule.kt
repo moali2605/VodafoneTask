@@ -12,6 +12,7 @@ import com.example.data.remote.RemoteSourceInterface
 import com.example.data.remote.Services
 import com.example.domain.repository.RepositoryInterface
 import com.example.domain.usecase.GetAllCitiesUseCase
+import com.example.domain.usecase.GetCityInfoUseCase
 import com.example.domain.usecase.GetWeatherUseCase
 import com.example.domain.usecase.InsertCityUseCase
 import dagger.Module
@@ -90,4 +91,10 @@ object AppModule {
     @Singleton
     fun provideInsertCityUseCase(repository: RepositoryInterface): InsertCityUseCase =
         InsertCityUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCityInfoUseCase(repository: RepositoryInterface): GetCityInfoUseCase =
+        GetCityInfoUseCase(repository)
+
 }

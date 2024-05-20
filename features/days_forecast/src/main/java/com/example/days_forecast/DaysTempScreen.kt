@@ -21,15 +21,21 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.core.R
+import com.example.core.util.setIcon
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun DaysTempScreen(viewModel: DaysForecastViewModel = hiltViewModel()) {
+fun DaysTempScreen(
+    cityLat: String,
+    cityLon: String
+) {
+
+    val viewModel: DaysForecastViewModel = hiltViewModel()
 
     LaunchedEffect(viewModel) {
-        viewModel.processIntent(DaysForecastIntent.Load)
+        viewModel.processIntent(DaysForecastIntent.Load, lat = cityLat.toDouble(), lon = cityLon.toDouble())
     }
 
     val state = viewModel.stateGetWeather.collectAsStateWithLifecycle()
@@ -57,7 +63,7 @@ fun DaysTempScreen(viewModel: DaysForecastViewModel = hiltViewModel()) {
                     Column(modifier = Modifier.padding(top = 16.dp)) {
                         WeatherListItems(
                             date = formatDayOfWeek(item.dateTime),
-                            icon = painterResource(id = R.drawable.sun), // Adjust icon based on item
+                            icon = setIcon(id = item.iconSet), // Adjust icon based on item
                             temp = "${item.temp.toInt()}°C",
                             description = item.description
                         )

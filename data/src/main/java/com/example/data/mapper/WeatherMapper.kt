@@ -13,6 +13,7 @@ fun WeatherResponse.toWeatherDomainModel(): WeatherDomainModel = WeatherDomainMo
     uvi = current.uvi,
     windSpeed = current.windSpeed,
     description = current.weather[0].description,
+    iconSet = current.weather[0].icon,
     daily = daily.map { it.toWeatherDomainModelDaily() }
 )
 
@@ -20,6 +21,7 @@ fun WeatherResponse.Daily.toWeatherDomainModelDaily(): WeatherDomainModel.DailyW
     temp = temperature.day,
     feelsLike = feelsLike.day,
     description = weather[0].description,
-    dateTime = dateTime
+    dateTime = dateTime,
+    iconSet = weather[0].icon
 
 )

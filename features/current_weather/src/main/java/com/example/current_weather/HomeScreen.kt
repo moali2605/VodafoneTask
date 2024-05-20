@@ -38,20 +38,27 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.core.R
+import com.example.core.util.Constants.DAYS_FORECAST_SCREEN
+import com.example.core.util.setIcon
 import com.example.domain.model.WeatherDomainModel
 
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    cityName: String,
+    cityLat: String,
+    cityLon: String
+) {
 
     val viewModel: CurrentWeatherViewModel = hiltViewModel()
-    viewModel.getWeather(lat = 31.0409, lon = 31.3785)
+    viewModel.getWeather(lat = cityLat.toDouble(), lon = cityLon.toDouble())
 
     var weatherResult by remember { mutableStateOf<WeatherDomainModel?>(null) }
     val state by viewModel.stateGetWeather.collectAsStateWithLifecycle()
 
-    val error by viewModel.getWeatherErrorState.collectAsStateWithLifecycle(1)
-    if (error.toString() != "1") {
+    val error by viewModel.getWeatherErrorState.collectAsStateWithLifecycle("")
+    if (error.toString() != "") {
         Toast.makeText(LocalContext.current, error.toString(), Toast.LENGTH_SHORT).show()
     }
 
@@ -71,9 +78,9 @@ fun HomeScreen(navController: NavHostController) {
             modifier = Modifier.fillMaxSize()
         )
         Column(modifier = Modifier.padding(top = 48.dp, start = 16.dp, end = 16.dp)) {
-            weatherResult?.timezone?.let { TopBar(it, "city") }
+            weatherResult?.timezone?.let { TopBar(it, cityName) }
             Spacer(modifier = Modifier.height(32.dp))
-            CurrentWeatherIcon(painterResource(id = R.drawable.sun))
+            CurrentWeatherIcon(setIcon(id = weatherResult?.iconSet ?: "01d"))
             Spacer(modifier = Modifier.height(32.dp))
             weatherResult?.description?.let {
                 WeatherTemp(
@@ -95,7 +102,7 @@ fun HomeScreen(navController: NavHostController) {
             ) {
                 Button(
                     onClick = {
-                        navController.navigate("daysTempScreen")
+                        navController.navigate("$DAYS_FORECAST_SCREEN/$cityLat/$cityLon")
                     },
                     modifier = Modifier.align(Alignment.Center)
                 ) {

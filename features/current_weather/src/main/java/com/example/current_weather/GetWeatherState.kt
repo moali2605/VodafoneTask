@@ -16,6 +16,7 @@ sealed class GetWeatherState {
                 pressure = 0,
                 description = "",
                 uvi = 0.0,
+                iconSet = "",
                 daily = emptyList()
             ),
         val loading: Boolean = true

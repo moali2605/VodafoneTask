@@ -23,9 +23,9 @@ class DaysForecastViewModel @Inject constructor(private val getWeatherUseCase: G
         MutableSharedFlow()
     val getWeatherErrorState = _getWeatherErrorState.asSharedFlow()
 
-    fun processIntent(intent: DaysForecastIntent) {
+    fun processIntent(intent: DaysForecastIntent, lat: Double, lon: Double) {
         when (intent) {
-            is DaysForecastIntent.Load -> getWeather(lat = 31.0409, lon = 31.3785)
+            is DaysForecastIntent.Load -> getWeather(lat = lat, lon = lon)
         }
     }
 
@@ -35,6 +35,7 @@ class DaysForecastViewModel @Inject constructor(private val getWeatherUseCase: G
                 is DataHolder.Failure -> {
                     _getWeatherErrorState.emit(GetWeatherState.Failure(result.error ?: ""))
                 }
+
                 is DataHolder.Success -> {
                     _stateGetWeather.value = GetWeatherState.Display(result.data!!, loading = false)
                 }
