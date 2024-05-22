@@ -9,16 +9,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.city.CitySearchScreen
-import com.example.core.util.Constants
+import com.example.city.view.CitySearchScreen
 import com.example.core.util.Constants.CITY_LAT
 import com.example.core.util.Constants.CITY_LON
 import com.example.core.util.Constants.CITY_NAME
 import com.example.core.util.Constants.CITY_SEARCH_SCREEN
 import com.example.core.util.Constants.DAYS_FORECAST_SCREEN
 import com.example.core.util.Constants.HOME_SCREEN
-import com.example.current_weather.HomeScreen
-import com.example.days_forecast.DaysTempScreen
+import com.example.current_weather.view.HomeScreen
+import com.example.days_forecast.view.DaysTempScreen
 import com.example.vodafonetask.ui.theme.VodafoneTaskTheme
 import dagger.hilt.android.AndroidEntryPoint
 

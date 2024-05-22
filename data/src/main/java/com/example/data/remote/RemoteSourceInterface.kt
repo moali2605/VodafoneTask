@@ -1,6 +1,6 @@
 package com.example.data.remote
 
-import com.example.data.model.CityResponse
+import com.example.data.model.CitySearchResponse
 import com.example.data.model.WeatherResponse
 import retrofit2.Response
 
@@ -11,5 +11,5 @@ interface RemoteSourceInterface {
         lon: Double,
     ): Response<WeatherResponse>
 
-    suspend fun getCity(cityName:String):Response<List<CityResponse>>
+    suspend fun searchForCityByName(cityName:String):Response<List<CitySearchResponse>>
 }

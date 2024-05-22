@@ -1,13 +1,12 @@
-package com.example.city
+package com.example.city.state
 
-import com.example.myapplication.domain.model.CityDomainModel
+import com.example.domain.model.CityDomainModel
 
 sealed class GetCityState {
     data class Display(
         var cityResponse: List<CityDomainModel> =
             listOf(
-                CityDomainModel
-                    (
+                CityDomainModel(
                     cityName = "", cityLat = 0.0, cityLong = 0.0
                 )
             ),

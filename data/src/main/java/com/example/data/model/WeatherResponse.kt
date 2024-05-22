@@ -33,7 +33,7 @@ data class WeatherResponse(
 
     data class Minutely(
         @SerializedName("dt") val dateTime: Long,
-        @SerializedName("precipitation") val precipitation: Int
+        @SerializedName("precipitation") val precipitation: Double
     )
 
     data class Hourly(

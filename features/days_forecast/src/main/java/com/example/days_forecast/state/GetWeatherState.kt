@@ -1,4 +1,4 @@
-package com.example.days_forecast
+package com.example.days_forecast.state
 
 import com.example.domain.model.WeatherDomainModel
 

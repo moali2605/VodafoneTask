@@ -1,6 +1,6 @@
 package com.example.data.remote
 
-import com.example.data.model.CityResponse
+import com.example.data.model.CitySearchResponse
 import com.example.data.model.WeatherResponse
 import retrofit2.Response
 import javax.inject.Inject
@@ -15,8 +15,8 @@ class RemoteSourceImp @Inject constructor(private val services: Services) :
         return services.getWeather(lat, lon)
     }
 
-    override suspend fun getCity(cityName: String): Response<List<CityResponse>> {
-        return services.getCity(cityName)
+    override suspend fun searchForCityByName(cityName: String): Response<List<CitySearchResponse>> {
+        return services.searchForCityByName(cityName)
     }
 
 }

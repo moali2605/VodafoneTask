@@ -1,7 +1,7 @@
 package com.example.data.mapper
 
 import com.example.data.model.CityEntity
-import com.example.myapplication.domain.model.CityDomainModel
+import com.example.domain.model.CityDomainModel
 
 fun CityEntity.toCityDomainModel() = CityDomainModel(
     cityName = cityName, cityLat = cityLat, cityLong = cityLong

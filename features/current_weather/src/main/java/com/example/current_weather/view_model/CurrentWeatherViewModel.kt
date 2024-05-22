@@ -1,10 +1,12 @@
-package com.example.current_weather
+package com.example.current_weather.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.util.DataHolder
+import com.example.current_weather.state.GetWeatherState
 import com.example.domain.usecase.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,13 +25,17 @@ class CurrentWeatherViewModel @Inject constructor(private val getWeatherUseCase:
     val getWeatherErrorState = _getWeatherErrorState.asSharedFlow()
 
     fun getWeather(lat: Double, lon: Double) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (val result = getWeatherUseCase.execute(lat, lon)) {
                 is DataHolder.Failure -> {
                     _getWeatherErrorState.emit(GetWeatherState.Failure(result.error ?: ""))
                 }
+
                 is DataHolder.Success -> {
-                    _stateGetWeather.value = GetWeatherState.Display(result.data!!, loading = false)
+                    result.data?.let {
+                        _stateGetWeather.value =
+                            GetWeatherState.Display(it, loading = false)
+                    }
                 }
             }
         }

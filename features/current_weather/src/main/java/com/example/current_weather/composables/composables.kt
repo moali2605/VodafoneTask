@@ -1,7 +1,5 @@
-package com.example.current_weather
+package com.example.current_weather.composables
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,106 +14,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import com.example.core.R
-import com.example.core.util.Constants.DAYS_FORECAST_SCREEN
-import com.example.core.util.setIcon
-import com.example.domain.model.WeatherDomainModel
-
-
-@Composable
-fun HomeScreen(
-    navController: NavHostController,
-    cityName: String,
-    cityLat: String,
-    cityLon: String
-) {
-
-    val viewModel: CurrentWeatherViewModel = hiltViewModel()
-    viewModel.getWeather(lat = cityLat.toDouble(), lon = cityLon.toDouble())
-
-    var weatherResult by remember { mutableStateOf<WeatherDomainModel?>(null) }
-    val state by viewModel.stateGetWeather.collectAsStateWithLifecycle()
-
-    val error by viewModel.getWeatherErrorState.collectAsStateWithLifecycle("")
-    if (error.toString() != "") {
-        Toast.makeText(LocalContext.current, error.toString(), Toast.LENGTH_SHORT).show()
-    }
-
-    if (!state.loading) {
-        val result = state.weatherResponse
-        weatherResult = result
-        Log.e("okhttp", "HomeScreen: $result")
-    }
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.homebg),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        Column(modifier = Modifier.padding(top = 48.dp, start = 16.dp, end = 16.dp)) {
-            weatherResult?.timezone?.let { TopBar(it, cityName) }
-            Spacer(modifier = Modifier.height(32.dp))
-            CurrentWeatherIcon(setIcon(id = weatherResult?.iconSet ?: "01d"))
-            Spacer(modifier = Modifier.height(32.dp))
-            weatherResult?.description?.let {
-                WeatherTemp(
-                    temp = weatherResult!!.temperature.toInt().toString(),
-                    feelLike = weatherResult!!.feelsLike.toInt().toString(),
-                    weatherState = it
-                )
-            }
-            Spacer(modifier = Modifier.height(100.dp))
-            StateBar(
-                humidity = "${weatherResult?.humidity.toString()}%",
-                pressure = weatherResult?.pressure.toString(),
-                uvIndex = weatherResult?.uvi.toString(),
-                wind = "${weatherResult?.windSpeed.toString()} m/s"
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate("$DAYS_FORECAST_SCREEN/$cityLat/$cityLon")
-                    },
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-                    Text(
-                        text = "10 days forecast",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun TopBar(date: String, city: String) {

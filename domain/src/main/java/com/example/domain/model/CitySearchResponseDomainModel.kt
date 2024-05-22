@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-data class CityResponseDomainModel(
+data class CitySearchResponseDomainModel(
     val name: String,
     val latitude: Double,
     val longitude: Double,

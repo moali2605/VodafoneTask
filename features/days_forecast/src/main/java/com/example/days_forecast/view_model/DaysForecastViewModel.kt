@@ -1,8 +1,9 @@
-package com.example.days_forecast
+package com.example.days_forecast.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.util.DataHolder
+import com.example.days_forecast.state.GetWeatherState
 import com.example.domain.usecase.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,19 +26,25 @@ class DaysForecastViewModel @Inject constructor(private val getWeatherUseCase: G
 
     fun processIntent(intent: DaysForecastIntent, lat: Double, lon: Double) {
         when (intent) {
-            is DaysForecastIntent.Load -> getWeather(lat = lat, lon = lon)
+            is DaysForecastIntent.Load -> getWeather(lat, lon)
         }
     }
 
-    private fun getWeather(lat: Double, lon: Double) {
+    fun getWeather(lat: Double, lon: Double) {
         viewModelScope.launch {
             when (val result = getWeatherUseCase.execute(lat, lon)) {
                 is DataHolder.Failure -> {
-                    _getWeatherErrorState.emit(GetWeatherState.Failure(result.error ?: ""))
+                    _getWeatherErrorState.emit(
+                        GetWeatherState.Failure(
+                            result.error ?: "unknown error"
+                        )
+                    )
                 }
 
                 is DataHolder.Success -> {
-                    _stateGetWeather.value = GetWeatherState.Display(result.data!!, loading = false)
+                    result.data?.let {
+                        _stateGetWeather.value = GetWeatherState.Display(it, loading = false)
+                    }
                 }
             }
         }

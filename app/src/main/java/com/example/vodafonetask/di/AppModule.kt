@@ -2,7 +2,8 @@ package com.example.vodafonetask.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.data.Repository.RepositoryImp
+import com.example.data.Repository.CityRepositoryImp
+import com.example.data.Repository.WeatherRepositoryImp
 import com.example.data.local.CityDao
 import com.example.data.local.CityDataBase
 import com.example.data.local.LocalSourceImp
@@ -10,11 +11,12 @@ import com.example.data.local.LocalSourceInterface
 import com.example.data.remote.RemoteSourceImp
 import com.example.data.remote.RemoteSourceInterface
 import com.example.data.remote.Services
-import com.example.domain.repository.RepositoryInterface
+import com.example.domain.repository.CityRepositoryInterface
+import com.example.domain.repository.WeatherRepositoryInterface
 import com.example.domain.usecase.GetAllCitiesUseCase
-import com.example.domain.usecase.GetCityInfoUseCase
 import com.example.domain.usecase.GetWeatherUseCase
 import com.example.domain.usecase.InsertCityUseCase
+import com.example.domain.usecase.SearchForCityByNameUseCae
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,28 +75,36 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(
-        remoteSourceInterface: RemoteSourceInterface, localSourceInterface: LocalSourceInterface
-    ): RepositoryInterface = RepositoryImp(remoteSourceInterface, localSourceInterface)
+    fun provideWeatherRepository(
+        remoteSourceInterface: RemoteSourceInterface
+    ): WeatherRepositoryInterface =
+        WeatherRepositoryImp(remoteSourceInterface)
 
     @Provides
     @Singleton
-    fun provideGetWeatherUseCase(repository: RepositoryInterface): GetWeatherUseCase =
+    fun provideCityRepository(
+        localSourceInterface: LocalSourceInterface
+    ): CityRepositoryInterface =
+        CityRepositoryImp(localSourceInterface)
+
+    @Provides
+    @Singleton
+    fun provideGetWeatherUseCase(repository: WeatherRepositoryInterface): GetWeatherUseCase =
         GetWeatherUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideGetCityUseCase(repository: RepositoryInterface): GetAllCitiesUseCase =
+    fun provideGetCityInfoUseCase(repository: WeatherRepositoryInterface): SearchForCityByNameUseCae =
+        SearchForCityByNameUseCae(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCityUseCase(repository: CityRepositoryInterface): GetAllCitiesUseCase =
         GetAllCitiesUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideInsertCityUseCase(repository: RepositoryInterface): InsertCityUseCase =
+    fun provideInsertCityUseCase(repository: CityRepositoryInterface): InsertCityUseCase =
         InsertCityUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun provideGetCityInfoUseCase(repository: RepositoryInterface): GetCityInfoUseCase =
-        GetCityInfoUseCase(repository)
 
 }

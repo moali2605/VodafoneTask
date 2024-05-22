@@ -1,9 +1,9 @@
 package com.example.data.mapper
 
-import com.example.data.model.CityResponse
-import com.example.domain.model.CityResponseDomainModel
+import com.example.data.model.CitySearchResponse
+import com.example.domain.model.CitySearchResponseDomainModel
 
-fun CityResponse.toCityResponseDomainModel() = CityResponseDomainModel(
+fun CitySearchResponse.toCityResponseDomainModel() = CitySearchResponseDomainModel(
     name = name ?: "",
     latitude = latitude ?: 0.0,
     longitude = longitude ?: 0.0,
